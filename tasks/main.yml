@@ -1,0 +1,39 @@
+---
+# tasks file for panxatony.logstash-forwarder
+
+- name: Create a yum repository for Logstash forwarder
+  template: src=logstash-forwarder.repo.j2 dest=/etc/yum.repos.d/logstash-forwarder.repo # owner=root group=root mode=0644
+  become: yes
+  become_user: root
+  tags: 
+    - logstash-forwarder
+
+- name: Install Logstash-forwarder
+  yum: name=logstash-forwarder state=present
+  become: yes
+  become_user: root
+  tags: 
+    - logstash-forwarder
+
+#- name: Copy Certificate from Logstash Server
+#  synchronize: src=/etc/pki/tls/certs/logstash-forwarder.crt dest=/etc/pki/tls/certs/logstash-forwarder.crt
+#  delegate_to: "{{ logstash_server }}"
+#  become: yes
+#  become_user: root
+#  tags: 
+#    - logstash-forwarder
+
+- name: Start Logstash and enable on boot
+  service: name=logstash-forwarder state=started enabled=yes
+  become: yes
+  become_user: root
+  tags: 
+    - logstash-forwarder
+
+- name: Configure the /etc/logstash-forwarder
+  template: src=server_forwarder.conf.j2 dest=/etc/logstash-forwarder.conf #owner=root group=root mode=0664
+  notify: restart logstash-forwarder
+  become: yes
+  become_user: root
+  tags: 
+    - logstash-forwarder

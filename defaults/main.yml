@@ -1,0 +1,6 @@
+---
+# defaults file for panxatony.logstash-forwarder
+
+logstash_forwarder_repo_base_url: http://packages.elastic.co/logstashforwarder/centos
+logstash_forwarder_repo_gpg_key_url: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+logstash_server: 192.168.60.7

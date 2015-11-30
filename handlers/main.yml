@@ -1,0 +1,9 @@
+---
+# handlers file for panxatony.logstash-forwarder
+
+- name: restart logstash-forwarder
+  service: name=logstash-forwarder state=restarted
+  become: yes
+  become_user: root
+  tags:
+    - logstash-forwarder
